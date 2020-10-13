@@ -5,9 +5,25 @@ const axios = require('axios');
 const app = express();
 app.use(bodyParser.json());
 
-app.post('/events', (req, res) =>{
-    
-})
+app.post('/events', async (req, res) =>{
+    const {type, data} = req.body;
+
+    if(type === 'CommentCreated'){
+        const status = data.content.includes('orange') ? 'rejected' : 'approved';
+        await axios.post('http://localhost:4001/events', {
+            type: 'CommentModerated',
+            data: {
+                id: data.id, 
+                content: data.content, 
+                postId: data.postId, 
+                status
+            }
+        });
+    }
+
+    res.send({});
+
+});
 
 app.listen(4003, () =>{
     console.log("Server listning on port 4003");
