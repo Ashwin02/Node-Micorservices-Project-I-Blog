@@ -21,7 +21,6 @@ kind: Service
 metadata:
   name: event-bus-srv
 spec:
-  type: NodePort
   selector:
     app: event-bus
   ports:
